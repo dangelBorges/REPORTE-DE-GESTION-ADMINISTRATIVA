@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Reporte de Gestión Administrativa — Octubre 2025</title>
+<style>
+  :root{
+    --bg:#f5f8fb;
+    --card:#ffffff;
+    --navy-900:#04284a;
+    --navy-700:#0b4b78;
+    --navy-500:#1673b3;
+    --aqua:#78c2e6;
+    --accent:#0b66a3;
+    --muted:#6b7b8a;
+    --success:#2e9c6e;
+    --danger:#e06363;
+    --glass: rgba(255,255,255,0.6);
+    --radius:12px;
+    font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+    color:var(--navy-900);
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background: linear-gradient(180deg,#f5f8fb 0%, #eef6fb 100%);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding:28px;
+  }
+
+  .container{
+    max-width:1150px;
+    margin:0 auto;
+  }
+
+  header{
+    display:flex;
+    gap:18px;
+    align-items:center;
+    margin-bottom:20px;
+  }
+  .brand{
+    background:linear-gradient(90deg,var(--navy-700),var(--navy-500));
+    color:white;
+    padding:18px 22px;
+    border-radius:14px;
+    box-shadow: 0 6px 18px rgba(11,75,120,0.12);
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .brand h1{margin:0;font-size:20px;letter-spacing:0.4px}
+  .brand p{margin:0;font-size:12px;opacity:.95}
+
+  .meta{
+    margin-left:auto;
+    text-align:right;
+  }
+  .meta small{display:block;color:var(--muted)}
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(12,1fr);
+    gap:16px;
+  }
+
+  /* Cards */
+  .card{
+    background:var(--card);
+    border-radius:var(--radius);
+    box-shadow: 0 6px 20px rgba(10,40,70,0.06);
+    padding:18px;
+  }
+
+  /* Overview row */
+  .kpi{
+    display:flex;
+    gap:12px;
+  }
+  .kpi .card{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    min-height:120px;
+  }
+  .kpi .value{font-size:28px;font-weight:700;color:var(--navy-700)}
+  .kpi .label{font-size:13px;color:var(--muted)}
+  .kpi .sub{font-size:12px;color:var(--muted);margin-top:6px}
+
+  /* Left column main */
+  .left{
+    grid-column: span 7;
+  }
+  .right{
+    grid-column: span 5;
+  }
+
+  h2.section{
+    margin:0 0 12px 0;
+    font-size:16px;
+    color:var(--navy-700);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .summary{
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+
+  /* accordion */
+  .accordion .item + .item{margin-top:10px}
+  .accordion .head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    cursor:pointer;
+    padding:12px;
+    border-radius:10px;
+    background:linear-gradient(90deg, rgba(7,55,95,0.03), rgba(7,55,95,0.01));
+  }
+  .accordion .head h3{margin:0;font-size:14px}
+  .accordion .head .chip{font-size:12px;padding:6px 10px;border-radius:8px;background:var(--glass);color:var(--navy-700)}
+  .accordion .body{padding:12px 14px 18px 14px;display:none;border-radius:8px}
+
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  table th, table td{padding:8px 10px;border-bottom:1px solid #eef3f8;text-align:left}
+  table th{font-weight:700;color:var(--navy-700);background:transparent}
+  .small{font-size:12px;color:var(--muted)}
+
+  .progress{
+    height:10px;border-radius:10px;background:#e9f3fb;overflow:hidden;
+  }
+  .bar{height:100%;background:linear-gradient(90deg,var(--navy-700),var(--navy-500));display:block}
+
+  /* mini charts area */
+  .charts{display:flex;gap:12px;align-items:stretch}
+  .chart-card{flex:1;padding:14px;border-radius:10px;background:linear-gradient(180deg,rgba(7,75,125,0.03),rgba(7,75,125,0.01));}
+
+  .actions{display:flex;gap:10px;margin-left:auto;align-items:center}
+  .btn{
+    background:var(--navy-700);
+    color:white;padding:10px 14px;border-radius:8px;border:none;cursor:pointer;
+    font-weight:600;font-size:13px;
+  }
+  .btn.secondary{background:transparent;color:var(--navy-700);border:1px solid rgba(11,75,120,0.08)}
+
+  footer{margin-top:16px;text-align:center;color:var(--muted);font-size:12px}
+
+  /* Responsive */
+  @media (max-width:980px){
+    .left{grid-column:span 12}
+    .right{grid-column:span 12 }
+    .kpi{flex-direction:column}
+    .card{flex-direction:column}
+    .actions{flex-direction:column}
+    .charts{flex-direction:column}
+    header{flex-direction:column;align-items:flex-start;gap:10px}
+    .meta{text-align:left}
+  }
+</style>
+</head>
+<body>
+  <div class="container" role="main">
+    <header>
+      <div class="brand" aria-hidden="true">
+        <!-- simple logo mark -->
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="1" y="1" width="22" height="22" rx="6" fill="#0b4b78"/>
+          <path d="M6 12h12M6 8h12M6 16h8" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <h1>Reporte de Gestión Administrativa</h1>
+          <p>Planta Bodega Rancagua — Octubre 2025</p>
+        </div>
+      </div>
+
+      <div class="meta">
+        <small>Elaborado por: Jefe de Producción: Dangel Borges</small>
+        <div style="font-weight:700;margin-top:6px">Estado: <span style="color:var(--success)">Operativo</span></div>
+      </div>
+    </header>
+
+    <!-- KPIs -->
+    <section class="grid" style="margin-bottom:14px">
+      <div class="card kpi" style="grid-column: span 12;">
+        <div style="display:flex;align-items:center;width:100%">
+          <div style="flex:1">
+            <div style="display:flex;gap:12px;align-items:center">
+              <div style="min-width:220px">
+                <div class="value">76.680 kg</div>
+                <div class="label">Producción total (enviada a inplants)</div>
+                <div class="sub">Mes: Octubre 2025 — Top cliente: CMPC Til Til (17.900 kg)</div>
+              </div>
+              <div style="flex:1">
+                <div style="display:flex;gap:12px">                  
+                  <div class="card">
+                    <div class="small">Reprocesos / merma</div>
+                    <div class="value" style="color:var(--success)">0.34%</div>
+                    <div class="small">262 kg reprocesados</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="actions" role="toolbar" aria-label="Acciones del reporte">
+            <button class="btn" onclick="window.print()">Imprimir / Exportar PDF</button>
+            <button class="btn secondary" id="toggleAll">Expandir / Colapsar todo</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main grid: left detailed, right quick -->
+    <section class="grid" style="align-items:start">
+      <div class="left">
+
+        <!-- 1. Sistema de gestión administrativa (accordion) -->
+        <div class="card">
+          <h2 class="section">1. Sistema de Gestión Administrativa</h2>
+          <p class="small">Resumen ejecutivo de registros, controles y evidencia del cumplimiento del sistema integrado.</p>
+
+          <div class="accordion" id="accordion">
+
+            <!-- 1.1 Mantenimiento -->
+            <div class="item">
+              <div class="head" data-target="mantenimiento">
+                <h3>1.1 Registros de Mantenimiento y Calibración</h3>
+                <div class="chip">Ver detalles</div>
+              </div>
+              <div class="body" id="mantenimiento">
+                <table>
+                  <thead>
+                    <tr><th>Actividad</th><th>Frecuencia</th><th>Estado</th><th>Observaciones</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Mantenimiento preventivo menor</td><td>Último sábado de cada mes</td><td><strong style="color:var(--success)">Realizado</strong></td><td>OK — 25/10/2025</td></tr>
+                    <tr><td>Mantenimiento preventivo mayor</td><td>Anual (Enero)</td><td><span class="small">Próximo: Ene 2026</span></td><td>Planificado</td></tr>
+                    <tr><td>Mantenimiento de aires acondicionados</td><td>Semestral (Ene / Jul)</td><td><strong style="color:var(--success)">Realizado</strong></td><td>Julio 2025 — sin observaciones</td></tr>
+                    <tr><td>Calibración básculas </td><td>Según programa anual</td><td><strong style="color:var(--success)">Realizado</strong></td><td>Próxima calibración (BS-04-PT) 04/12/2025</td></tr>
+		    <tr><td>Calibración de pesas patrón</td><td>Según programa anual</td><td><strong style="color:var(--success)">Realizado</strong></td><td>próxima calibración: 09/08/2026</td></tr>
+                    <tr><td>Calibración equipos laboratorio</td><td>Según programa</td><td><strong style="color:var(--success)">Realizado</strong></td><td>Proxima calibración: nov-25 
+			<ul><li>Copa Zahn Ez #2 CZ-01-LC</li><li>Copa Zahn Ez #2 CZ-02-LC</li><li>Copa Zahn Ez #3 CZ-03-LC</li></li><li>Rub Tester 2000 RT-01-LC</li></li><li>Rodillo Ánilox RA-01-LC</li></li>
+			<li>Rodillo Ánilox RA-01-LC</li></li><li>Mezclador de laboratorio ME-02-LC</li> </ul> </td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 2. Registros de revisión vehículos -->
+            <div class="item">
+              <div class="head" data-target="vehiculos">
+                <h3>2. Registros de revisión de vehículos</h3>
+                <div class="chip">Ver bitácoras</div>
+              </div>
+              <div class="body" id="vehiculos">
+                <table>
+                  <thead><tr><th>Control</th><th>Frecuencia</th><th>Estado</th><th>Observaciones</th></tr></thead>
+                  <tbody>
+                    <tr><td>Transporte de productos</td><td>Diaria</td><td><strong style="color:var(--success)">Conforme</strong></td><td><ul><li>paredes del cajón en mal estado</li>
+			<li>techo del cajón en mal estado</li><li>puertas del cajón en mal estado</li></ul></td></tr>
+                    <tr><td>Revisión diaria de vehículos</td><td>Diaria</td><td><strong style="color:var(--success)">Conforme</strong></td><td><ul><li>Bocina mala</li><li>Falta caja de herramientas</li></ul></td></tr>
+                    <tr><td>Revisión diaria grúa horquilla</td><td>Diaria</td><td><strong style="color:var(--success)">Conforme</strong></td><td><ul><li>Check firmados</li><li>Se recomienda cambiar motor de partida</li><li>Última mantención 16/10/2025</li></ul> </td></tr>
+                    <tr><td>Verificación visual empaques (Importaciones)</td><td>Por arribo</td><td><strong style="color:var(--success)">Conforme</strong></td><td>Sin daños en octubre</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 3. Limpieza general -->
+            <div class="item">
+              <div class="head" data-target="limpieza">
+                <h3>3. Registros de Limpieza General</h3>
+                <div class="chip">Plan y bitácora</div>
+              </div>
+              <div class="body" id="limpieza">
+                <table>
+                  <thead><tr><th>Área</th><th>Frecuencia</th><th>Estado</th><th>Observaciones</th></tr></thead>
+                  <tbody>
+                    <tr><td>Producción</td><td>Diaria</td><td><strong style="color:var(--success)">OK</strong></td><td>Rutina final de jornada implementada</td></tr>
+                    <tr><td>Laboratorio</td><td>Diaria</td><td><strong style="color:var(--success)">OK</strong></td><td>Mesones desinfectados</td></tr>
+                    <tr><td>Baños</td><td>Diaria</td><td><strong style="color:var(--success)">OK</strong></td><td>Sin observaciones</td></tr>
+                    <tr><td>Oficinas administración</td><td>Diaria</td><td><strong style="color:var(--success)">OK</strong></td><td>Sin observaciones</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 4. Controles ambientales -->
+            <div class="item">
+              <div class="head" data-target="ambiental">
+                <h3>4. Registros de Controles Ambientales</h3>
+                <div class="chip">Monitoreos</div>
+              </div>
+              <div class="body" id="ambiental">
+                <table>
+                  <thead><tr><th>Control</th><th>Periodicidad</th><th>Resultado</th><th>Observaciones</th></tr></thead>
+                  <tbody>
+                    <tr><td>Control de vidrio / material quebradizo</td><td>Mensual</td><td><strong style="color:var(--success)">0 incidencias</strong></td><td>Controles en bodega</td></tr>
+                    <tr><td>Análisis de agua potable</td><td>Semestral</td><td><strong style="color:var(--success)">Aprobado</strong></td><td>Último: 02/09/2025</td></tr>
+                    <tr><td>Medición de iluminación</td><td>Anual</td><td><strong style="color:#e6a400">Pendiente</strong></td><td>Hay que programarla</td></tr>
+                    <tr><td>Medición de ruido</td><td>Anual</td><td><strong style="color:#e6a400">Pendiente</strong></td><td>Hay que programarla</td></tr>
+                    <tr><td>Pesaje de residuos</td><td>cada 2 días</td><td><strong style="color:var(--navy-700)">201 kg</strong></td><td><ul><li>Papel y carton: 22 kg</li><li>Plásticos: 25 kg</li>
+			<li>Resíduos orgánicos: 20 kg</li><li>No reciclables: 37 kg</li></ul></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 5. Evaluación proveedores -->
+            <div class="item">
+              <div class="head" data-target="proveedores">
+                <h3>5. Evaluación de Proveedores</h3>
+                <div class="chip">Reporte</div>
+              </div>
+              <div class="body" id="proveedores">
+                <p class="small">no se registraron proveedores nuevos este mes</p>
+              </div>
+            </div>
+
+            <!-- 6. Registros importaciones -->
+            <div class="item">
+              <div class="head" data-target="importaciones">
+                <h3>6. Registros de Importaciones</h3>
+                <div class="chip">Documentos</div>
+              </div>
+              <div class="body" id="importaciones">
+                <table>
+                  <thead><tr><th>Fecha</th><th>Orden de Compra</th><th>Origen</th><th>Estado recepción</th></tr></thead>
+                  <tbody>
+                    <tr><td>08/09/2025</td><td>2000355-356</td><td>WEAREINK Guatemala</td><td><strong style="color:var(--success)">Conforme</strong></td></tr>
+                    <tr><td>12/09/2025</td><td>2000357-358</td><td>GP-MEX</td><td><strong style="color:var(--success)">Conforme</strong></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 7. Mantenimiento vehículos -->
+            <div class="item">
+              <div class="head" data-target="mvehiculos">
+                <h3>7. Mantenimiento de Vehículos</h3>
+                <div class="chip">Historial</div>
+              </div>
+              <div class="body" id="mvehiculos">
+                <table>
+                  <thead><tr><th>Vehículo</th><th>Última mantención</th><th>próxima mantención</th><th>Observaciones</th></tr></thead>
+                  <tbody>
+                    <tr><td>Camion WOLSKWAGEN -- HDVJ76</td><td>504.000 km</td><td>514.000 km</td><td>Pendiente: revisar estado de Frenos</td></tr>
+                    <tr><td>Camión HYUNDAI -- PRTG91</td><td>00.000 km</td><td>00.000 km</td><td>xxxx</td></tr>
+                    <tr><td>Furgón FORD -- TPFF11</td><td>00.000 km</td><td>00.000 km</td><td>xxxx</td></tr>
+                    <tr><td>Grúa Horquilla </td><td>6.140 horas</td><td>6.440 horas</td><td>cambiar motor de partida</td></tr>
+                  </tbody>
+                </table>
+                
+              </div>
+            </div>
+
+            <!-- 8. Control de plagas -->
+            <div class="item">
+              <div class="head" data-target="plagas">
+                <h3>8. Registros de Control de Plagas</h3>
+                <div class="chip">Proveedores externos</div>
+              </div>
+              <div class="body" id="plagas">
+                <p class="small">Control mensual mediante empresa contratada. Octubre: sin evidencia de actividad. Trampas revisadas y cebos repuestos en puntos críticos (bodega, recepción, laboratorio).</p>
+                <table>
+                  <thead><tr><th>Fecha</th><th>Descripcion del trabajo</th><th>Observaciones</th></tr></thead>
+                  <tbody>
+                    <tr><td>06/10/2025</td><td>Desratización</td><td>trampas reactivadas: sin actividad</td></tr>
+                    <tr><td> </td><td>Desinsetación</td><td>Cambio de lámina UV</td></tr>
+                    <tr><td> </td><td>Desinfección</td><td>fumigación: 30cc x 3 lt de agua</td></tr>
+                    <tr><td>20/10/2025 </td><td>Desratización</td><td>Trampas revisadas: sin actividad</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 9. Planes de acción -->
+            <div class="item">
+              <div class="head" data-target="planes">
+                <h3>9. Planes de Acción y Acciones Correctivas</h3>
+                <div class="chip">Seguimiento</div>
+              </div>
+              <div class="body" id="planes">
+                <table>
+                  <thead><tr><th>N°</th><th>Acción</th><th>Estado</th><th>Responsable</th><th>Fecha cierre</th></tr></thead>
+                  <tbody>
+                    <tr><td>01</td><td>Reparación tranca de puerta del cajón del camion</td><td><strong style="color:var(--success)">terminado</strong></td><td>Jefe Planta</td><td>03/10/2025</td></tr>
+                    <tr><td>02</td><td>Reparación desague de baño de administración</td><td><strong style="color:var(--success)">terminado</strong></td><td>Jefe Planta</td><td>14/10/2025</td></tr>
+                    <tr><td>03</td><td>Reposición espejo retrovisor grua horquilla</td><td><strong style="color:var(--success)">terminado</strong></td><td>Jefe Planta</td><td>26/10/2025</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 10. Auditorías internas -->
+            <div class="item">
+              <div class="head" data-target="auditorias">
+                <h3>10. Auditorías Internas (trazabilidad)</h3>
+                <div class="chip">Evidencias</div>
+              </div>
+              <div class="body" id="auditorias">
+                <p class="small">Ejercicio de trazabilidad realizado 10/10/2025 — Producto: Tinta Azul Empaque — Resultado: 100% trazabilidad confirmada. Observación: reforzar control documental en mezclas menores.</p>
+              </div>
+            </div>
+
+
+            <!-- 12. Charlas y capacitaciones -->
+            <div class="item">
+              <div class="head" data-target="capacitaciones">
+                <h3>12. Charlas y Capacitaciones</h3>
+                <div class="chip">Registro</div>
+              </div>
+              <div class="body" id="capacitaciones">
+                <table>
+                  <thead><tr><th>Fecha</th><th>Tema</th><th>Participantes</th><th>Modalidad</th></tr></thead>
+                  <tbody>
+                    <tr><td>05/10/2025</td><td>Uso correcto de EPP</td><td>10</td><td>Presencial</td></tr>
+                    <tr><td>19/10/2025</td><td>Control de derrames</td><td>8</td><td>Presencial</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            
+
+            <!-- 14. Análisis MP -->
+            <div class="item">
+              <div class="head" data-target="mp">
+                <h3>14. Análisis de Materia Prima (importación entrante)</h3>
+                <div class="chip">Controles</div>
+              </div>
+              <div class="body" id="mp">
+                <p class="small">Pigmento Azul 15:3 (lote DE245): ΔE = 0.75 (dentro de tolerancia). Resina RS-22: viscosidad en rango. No desviaciones detectadas.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 2. Planes y conclusiones -->
+        <div class="card" style="margin-top:12px">
+          <h2 class="section">Conclusiones y próximos pasos</h2>
+          <ul class="small">
+            <li>Programar medición anual de iluminación en noviembre 2025.</li>
+            <li>Cerrar bitácora digital de limpieza y capacitar al personal en su uso (noviembre).</li>
+            <li>Verificar y certificar pesa 50 kg pendientes en laboratorio (prioridad alta).</li>
+            <li>Seguimiento a proveedores logísticos para mantener OTIF > 95%.</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: snapshot + charts -->
+      <aside class="right">
+        <div class="card">
+          <h2 class="section">Resumen rápido</h2>
+          <div style="display:flex;gap:12px;align-items:center">
+            <div style="flex:1">
+              <div class="small">Producción total</div>
+              <div style="font-size:26px;font-weight:800;color:var(--navy-700)">76.680 kg</div>
+              <div class="small" style="margin-top:6px">Top 5 clientes:</div>
+              <ol style="padding-left:18px;margin:6px 0 0 0" class="small">
+                <li>CMPC Til Til — 17.900 kg</li>
+                <li>INT. PAPER — 17.260 kg</li>
+                <li>CMPC Osorno — 14.700 kg</li>
+                <li>Paimasa — 8.463 kg</li>
+                <li>CMPC Buin Norte — 5.470 kg</li>
+              </ol>
+            </div>
+
+            <div style="width:120px">
+              <!-- circular progress -->
+              <svg viewBox="0 0 36 36" width="100%" height="100%">
+                <defs>
+                  <linearGradient id="g1" x1="0" x2="1">
+                    <stop offset="0%" stop-color="#0b4b78"/>
+                    <stop offset="100%" stop-color="#1673b3"/>
+                  </linearGradient>
+                </defs>
+                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#e9f3fb" stroke-width="4"/>
+                <path id="progress" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="url(#g1)" stroke-width="4" stroke-dasharray="94,100" stroke-linecap="round"/>
+                <text x="18" y="20.5" text-anchor="middle" font-size="5.5" fill="#04284a" font-weight="700">94.1%</text>
+              </svg>
+              <div class="small" style="text-align:center;margin-top:6px">Asistencia</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+  <h2 class="section">Desarrollo de Nuevos Colores y Productos</h2>
+  <p class="small">Nuevas formulaciones aprobadas y enviadas a clientes durante el mes.</p>
+
+  <table style="margin-top:8px">
+    <thead>
+      <tr>
+        <th>Cliente</th>
+        <th>Producto</th>
+        <th>Color</th>
+      </tr>
+    </thead>
+    <tbody id="nuevosProductos">
+      <!-- Los datos se insertan aquí mediante JS -->
+    </tbody>
+  </table>
+</div>
+
+<script>
+  // === NUEVOS DESARROLLOS ===
+  const nuevos = [
+    {cliente:"CMPC BUIN NORTE", producto:"Pantone 2035 C", color:"#E93545"},
+    {cliente:"CMPC BUIN NORTE", producto:"Pantone Black C Kemi", color:"#4D4841"},
+    {cliente:"CMPC BUIN NORTE", producto:"Pantone 356 C", color:"#369B5A"},
+    {cliente:"CMPC BUIN NORTE", producto:"Pantone 368 C", color:"#82C22C"},
+    {cliente:"CMPC BUIN NORTE", producto:"Base Azul Pura", color:"#0056A4"},
+    {cliente:"CMPC BUIN NORTE", producto:"Barniz 196", color:"#fffff1"},
+    {cliente:"INTERNATIONAL PAPER", producto:"Purpura Zeus Transparente.", color:"#6A5171"}
+  ];
+
+  const cont = document.getElementById('nuevosProductos');
+  nuevos.forEach(n => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${n.cliente}</td>
+      <td>${n.producto}</td>
+      <td>
+        <div style="
+          width:22px;height:22px;
+          border-radius:6px;
+          background:${n.color};
+          border:1px solid #d0d8e0;
+          box-shadow:0 0 4px rgba(0,0,0,0.08);
+        " title="${n.color}"></div>
+      </td>`;
+    cont.appendChild(tr);
+  });
+</script>
+
+
+        <div class="card" style="margin-top:12px">
+          <h2 class="section">Acciones abiertas</h2>
+          <table>
+            <thead><tr><th>Acción</th><th>Responsable</th><th>Estado</th></tr></thead>
+            <tbody>
+              <tr><td>Medición iluminación</td><td>Mantención</td><td><strong style="color:#e6a400">Pendiente</strong></td></tr>
+              <tr><td>Calibrar pesa 50kg</td><td>Laboratorio</td><td><strong style="color:#e6a400">En proceso</strong></td></tr>
+              <tr><td>Bitácora digital limpieza</td><td>Calidad</td><td><strong style="color:#e6a400">En proceso</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </aside>
+    </section>
+
+    <footer>
+      Documento: Reporte de Gestión Administrativa — Octubre 2025 · Generado por Jefe de Producción · General Products Chile S.A.
+    </footer>
+  </div>
+
+<script>
+  // Simple accordion logic + toggle all
+  (function(){
+    const heads = document.querySelectorAll('.accordion .head');
+    const toggleAllBtn = document.getElementById('toggleAll');
+    let allOpen = false;
+
+    heads.forEach(h=>{
+      h.addEventListener('click', ()=> {
+        const id = h.dataset.target;
+        const body = document.getElementById(id);
+        const isOpen = body.style.display === 'block';
+        if(isOpen){ body.style.display = 'none'; }
+        else { body.style.display = 'block'; body.scrollIntoView({behavior:'smooth',block:'center'}); }
+      });
+    });
+
+    toggleAllBtn.addEventListener('click', ()=>{
+      allOpen = !allOpen;
+      document.querySelectorAll('.accordion .body').forEach(b=> b.style.display = allOpen ? 'block' : 'none');
+    });
+  })();
+
+  // Tiny charts (pure SVG) - data embedded; you can adapt values via JS variables
+  (function(){
+    // Bar chart: Mantenimientos realizados (sample data)
+    const dataM = [
+      {label:'Prevent. menor',v:12},
+      {label:'Prevent. mayor',v:1},
+      {label:'A/C',v:2},
+      {label:'Calib. básculas',v:8},
+      {label:'Lab calib',v:9}
+    ];
+    const svgM = document.getElementById('barMtn');
+    const w = svgM.clientWidth || 300, h = svgM.clientHeight || 80, pad=8;
+    svgM.setAttribute('viewBox',`0 0 ${w} ${h}`);
+    const max = Math.max(...dataM.map(x=>x.v))*1.1;
+    const barW = (w - pad*2) / dataM.length - 8;
+    dataM.forEach((d,i)=>{
+      const x = pad + i*(barW+8);
+      const barH = Math.max(2, (d.v/max)*(h - 30));
+      const y = h - barH - 18;
+      const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+      rect.setAttribute('x',x);
+      rect.setAttribute('y',y);
+      rect.setAttribute('width',barW);
+      rect.setAttribute('height',barH);
+      rect.setAttribute('rx',4);
+      rect.setAttribute('fill','url(#g1)');
+      svgM.appendChild(rect);
+      const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+      txt.setAttribute('x', x + barW/2);
+      txt.setAttribute('y', h - 6);
+      txt.setAttribute('font-size',10);
+      txt.setAttribute('text-anchor','middle');
+      txt.setAttribute('fill','#0b4b78');
+      txt.textContent = d.label.split(' ')[0];
+      svgM.appendChild(txt);
+    });
+
+    // Pie chart: controls environmental (simple categories)
+    const svgP = document.getElementById('pieEnv');
+    svgP.setAttribute('viewBox',`0 0 200 80`);
+    // data: done / pending / n/a
+    const pdata = [{k:'Hecho',v:70,color:'#1673b3'},{k:'Pendiente',v:20,color:'#e6a400'},{k:'N/A',v:10,color:'#dfeffb'}];
+    const cx = 40, cy=40, r=28;
+    let start=0;
+    const total = pdata.reduce((s,i)=>s+i.v,0);
+    pdata.forEach(p=>{
+      const slice = (p.v/total) * Math.PI*2;
+      const x1 = cx + r*Math.cos(start);
+      const y1 = cy + r*Math.sin(start);
+      const x2 = cx + r*Math.cos(start+slice);
+      const y2 = cy + r*Math.sin(start+slice);
+      const large = slice > Math.PI ? 1 : 0;
+      const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+      const d = `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2} z`;
+      path.setAttribute('d',d);
+      path.setAttribute('fill',p.color);
+      svgP.appendChild(path);
+      start += slice;
+    });
+    // legend
+    let lx=80, ly=10;
+    pdata.forEach(p=>{
+      const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+      rect.setAttribute('x',lx); rect.setAttribute('y',ly); rect.setAttribute('width',12); rect.setAttribute('height',12); rect.setAttribute('fill',p.color);
+      svgP.appendChild(rect);
+      const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+      t.setAttribute('x', lx+18); t.setAttribute('y', ly+11); t.setAttribute('font-size',11); t.setAttribute('fill','#04284a');
+      t.textContent = `${p.k} ${p.v}%`;
+      svgP.appendChild(t);
+      ly += 18;
+    });
+  })();
+</script>
+</body>
+</html>
